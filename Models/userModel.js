@@ -16,6 +16,7 @@ const userSchema = new mongoose.Schema({
     branch:{
         type: String,
         required: true,
+        enum: ['CSE','CSE(AIML)','CSE(DS)','CSE(H)','CS','CSIT','IT','ECE','ME','Civil','MCA']
         
     },
     
