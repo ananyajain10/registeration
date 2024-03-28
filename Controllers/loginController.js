@@ -3,8 +3,10 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
 import nodemailer from "nodemailer";
 import "dotenv/config.js";
+import otpModel from "../Models/otp.js";
 
 export const register = async (req, res) => {
+ 
   const salt = await bcrypt.genSalt(10);
   const hashedPassward = await bcrypt.hash(req.body.password, salt);
   req.body.password = hashedPassward;
@@ -30,6 +32,8 @@ export const register = async (req, res) => {
   } catch(error) {
     res.status(500).json({ message: error.message });
   }
+
+
 };
 
 export const login = async (req, res) => {
@@ -55,20 +59,20 @@ export const login = async (req, res) => {
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
-};
+} 
+
 
 // otp controller
 
-const inMemoryDB = {};
 
 export const sendOtp = async (req, res) => {
   const { email } = req.body;
 
   const otp = Math.floor(100000 + Math.random() * 900000);
-  inMemoryDB[email] = {
-    email: email,
-    otp: otp,
-  };
+
+  const newOtp = await otpModel.create({ email, otp });
+
+ 
 
   try {
     const transporter = nodemailer.createTransport({
@@ -100,15 +104,22 @@ export const sendOtp = async (req, res) => {
   }
 };
 
+const valid = false;
 export const verifyOtp = async (req, res) => {
   const { email, otp } = req.body;
+  const emailExist = await otpModel.findOne({ email }); 
   try {
-    if (inMemoryDB[email] && inMemoryDB[email].otp == otp) {
+    if (emailExist.otp == otp) {
+      
       res.status(200).json({ message: "OTP verified successfully" });
+      valid = true;
     } else {
       res.status(400).json({ message: "Invalid OTP" });
+      valid = false;
     }
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
+
+  await otpModel.deleteOne({email: email});
 };

@@ -16,7 +16,7 @@ const userSchema = new mongoose.Schema({
     branch:{
         type: String,
         required: true,
-        enum: ['CSE','CSE(AIML)','CSE(DS)','CSE(H)','CS','CSIT','IT','ECE','ME','Civil','MCA']
+        enum: ['CSE','CSE(AIML)','CSE(DS)','CS(H)','CS','CSIT','IT','ECE','ME','Civil','MCA']
         
     },
     
@@ -42,7 +42,12 @@ const userSchema = new mongoose.Schema({
             },
             message: 'Password must be greater than 6 characters'
         }
+    },
+    otp:{
+        type: Number,
+        required: true,
     }
+
 })
 
 const userModel = mongoose.model("userLogin",userSchema)
