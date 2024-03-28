@@ -4,6 +4,7 @@ import mongoose from 'mongoose'
 import dotenv from 'dotenv'
 import cors from 'cors'
 import authRoutes from './Routes/authRoutes.js'
+import quizRoutes from './Routes/quizRoutes.js'
 
 
 
@@ -21,4 +22,5 @@ mongoose
     .catch((err) => ("DB CONNECTION FAILED", err))
 
 app.use('/auth',authRoutes);
+app.use("/quiz", quizRoutes);
 app.listen(port, ()=> console.log(`Server running on port: ${port}`)) 
