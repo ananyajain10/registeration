@@ -5,36 +5,36 @@ import nodemailer from "nodemailer";
 import "dotenv/config.js";
 import otpModel from "../Models/otp.js";
 
-export const register = async (req, res) => {
+// export const register = async (req, res) => {
  
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassward = await bcrypt.hash(req.body.password, salt);
-  req.body.password = hashedPassward;
+//   const salt = await bcrypt.genSalt(10);
+//   const hashedPassward = await bcrypt.hash(req.body.password, salt);
+//   req.body.password = hashedPassward;
 
-  const newUser = new userModel(req.body);
-  const { name, rollno, branch, email } = req.body;
+//   const newUser = new userModel(req.body);
+//   const { name, rollno, branch, email } = req.body;
 
-  try {
-    const oldUser = await userModel.findOne({ email: email })
+//   try {
+//     const oldUser = await userModel.findOne({ email: email })
         
 
-    if (oldUser) {
-      return res.status(400).json({ message: "User already exists" });
-    } 
+//     if (oldUser) {
+//       return res.status(400).json({ message: "User already exists" });
+//     } 
 
-    const user = await newUser.save();
-    const token = jwt.sign(
-      { email: user.email, id: user._id },
-      process.env.TOKEN,
-      { expiresIn: "1h" }
-    );
-    res.status(201).json({ message: "User created successfully" });
-  } catch(error) {
-    res.status(500).json({ message: error.message });
-  }
+//     const user = await newUser.save();
+//     const token = jwt.sign(
+//       { email: user.email, id: user._id },
+//       process.env.TOKEN,
+//       { expiresIn: "1h" }
+//     );
+//     res.status(201).json({ message: "User created successfully" });
+//   } catch(error) {
+//     res.status(500).json({ message: error.message });
+//   }
 
 
-};
+// };
 
 export const login = async (req, res) => {
   const { email, password } = req.body;
@@ -104,12 +104,39 @@ export const sendOtp = async (req, res) => {
   }
 };
 
-const valid = false;
-export const verifyOtp = async (req, res) => {
+
+export const verifyOtpAndRegister = async (req, res) => {
   const { email, otp } = req.body;
   const emailExist = await otpModel.findOne({ email }); 
   try {
     if (emailExist.otp == otp) {
+
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassward = await bcrypt.hash(req.body.password, salt);
+      req.body.password = hashedPassward;
+    
+      const newUser = new userModel(req.body);
+      const { name, rollno, branch, email } = req.body;
+    
+      try {
+        const oldUser = await userModel.findOne({ email: email })
+            
+    
+        if (oldUser) {
+          return res.status(400).json({ message: "User already exists" });
+        } 
+    
+        const user = await newUser.save();
+        const token = jwt.sign(
+          { email: user.email, id: user._id },
+          process.env.TOKEN,
+          { expiresIn: "1h" }
+        );
+        res.status(201).json({ message: "User created successfully" });
+      } catch(error) {
+        res.status(500).json({ message: error.message });
+      }
+    
       
       res.status(200).json({ message: "OTP verified successfully" });
       valid = true;

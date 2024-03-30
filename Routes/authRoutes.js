@@ -1,12 +1,12 @@
 import express from 'express'
 
-import { login, register, sendOtp, verifyOtp } from '../Controllers/loginController.js'
+import { login,  sendOtp, verifyOtpAndRegister } from '../Controllers/loginController.js'
 
 const router = express.Router()
 
 router.post('/login',login);
-router.post('/register',register);
+
 router.post('/sendOtp',sendOtp);
-router.post('/verifyOtp',verifyOtp);
+router.post('/verifyOtpAndRegister',verifyOtpAndRegister);
 
 export default router
