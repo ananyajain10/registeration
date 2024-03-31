@@ -116,7 +116,7 @@ export const sendOtp = async (req, res) => {
 
 export const verifyOtpAndRegister = async (req, res) => {
   const { email, otp } = req.body;
-  const emailExist = await otpModel.findOne({ email: email }); 
+  const emailExist = await otpModel.findOne({ email: email, otp: otp}); 
   try {
     if (emailExist.otp == otp) {
 
@@ -125,7 +125,7 @@ export const verifyOtpAndRegister = async (req, res) => {
       req.body.password = hashedPassward;
     
       const newUser = new userModel(req.body);
-      const { name, rollno, branch, email } = req.body;
+      const { name, rollno, branch, email, otp } = req.body;
     
       try {
         const oldUser = await userModel.findOne({ email: email })
