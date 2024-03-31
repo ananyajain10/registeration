@@ -116,7 +116,7 @@ export const sendOtp = async (req, res) => {
 
 export const verifyOtpAndRegister = async (req, res) => {
   const { email, otp } = req.body;
-  const emailExist = await otpModel.findOne({ email }); 
+  const emailExist = await otpModel.findOne({ email: email }); 
   try {
     if (emailExist.otp == otp) {
 
