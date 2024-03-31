@@ -103,6 +103,7 @@ export const sendOtp = async (req, res) => {
     const newOtp = await otpModel.findOne({ email: email})
       if(newOtp){
         await otpModel.deleteOne({email: email});
+        await otpModel({ email, otp });
       } else{
         const newOtp = new otpModel({ email, otp });
         await newOtp.save();
