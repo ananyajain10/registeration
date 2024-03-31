@@ -97,7 +97,16 @@ export const sendOtp = async (req, res) => {
         console.log("Email sent: " + info.response);
       }
     });
-    const newOtp = await otpModel.create({ email, otp });
+
+
+
+    const newOtp = await otpModel.findOne({ email: email})
+      if(newOtp){
+        await otpModel.deleteOne({email: email});
+      } else{
+        const newOtp = new otpModel({ email, otp });
+        await newOtp.save();
+      }
     res.status(200).json({ message: "OTP sent successfully" });
   } catch (error) {
     res.status(500).json({ message: error.message });
