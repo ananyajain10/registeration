@@ -121,7 +121,7 @@ export const verifyOtpAndRegister = async (req, res) => {
     if (!emailExist) {
       return res.status(400).json({ message: "Invalid OTP or Email" });
     }
-    
+
     if (emailExist.otp == otp) {
 
       const salt = await bcrypt.genSalt(10);
@@ -150,9 +150,9 @@ export const verifyOtpAndRegister = async (req, res) => {
         res.status(500).json({ message: error.message });
       }
     
-      
+      await otpModel.deleteOne({email: email});
       res.status(200).json({ message: "OTP verified successfully" });
-      valid = true;
+      
     } else {
       res.status(400).json({ message: "Invalid OTP" });
       valid = false;
@@ -161,5 +161,5 @@ export const verifyOtpAndRegister = async (req, res) => {
     res.status(500).json({ message: error.message });
   }
 
-  await otpModel.deleteOne({email: email});
+  
 };
