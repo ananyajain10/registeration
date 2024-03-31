@@ -70,7 +70,13 @@ export const sendOtp = async (req, res) => {
 
   const otp = Math.floor(100000 + Math.random() * 900000);
 
-  const newOtp = await otpModel.create({ email, otp });
+  try{
+    const newOtp = await otpModel.create({ email, otp });
+    res.status(201).json({ message: "OTP sent successfully" });
+
+  }  catch(error){
+    res.status(500).json({ message: error.message });
+  }
 
  
 
