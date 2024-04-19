@@ -27,7 +27,7 @@ const userSchema = new mongoose.Schema({
 
         validate: {
             validator: function (value) {
-              return /^[a-zA-Z0-9._-]+@akgec\.ac\.in$/.test(value);
+              return /^[a-z]+[0-9]+@akgec\.ac\.in$/.test(value);
             },
             message: 'Invalid email format or does not belong to akgec.ac.in domain'
           }
