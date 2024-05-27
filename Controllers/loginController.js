@@ -139,7 +139,7 @@ const resetPasswordMail = async (name, email, token) => {
       from: process.env.EMAIL,
       to: email,
       subject: "Reset Your GDSC-QUIZ Password",
-      html: `<p>Hey! ${name}, Please use the attached link to <a href="http://localhost:3000/auth/resetpassword?token=${token}"> reset the password </a> </p>`,
+      html: `<p>Hey! ${name}, Please use the attached link to <a href="https://registerstudents.onrender.com/auth/resetpassword?token=${token}"> reset the password </a> </p>`,
     };
 
     transporter.sendMail(mailOptions, function (error, info) {
