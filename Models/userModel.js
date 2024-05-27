@@ -38,14 +38,19 @@ const userSchema = new mongoose.Schema({
         required: true,
         validate: {
             validator: function(value) {
-                return value.length >= 6;
-            },
-            message: 'Password must be greater than 6 characters'
-        }
+                return value.length >= 8 && 
+               /(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*()\-+=])/.test(value);
+      },
+      message: 'Password must be at least 8 characters and include a digit, lowercase letter, uppercase letter, and symbol'
+    }
     },
     otp:{
         type: Number,
         required: true,
+    },
+    token:{
+        type: String,
+        default: ''
     }
 
 })

@@ -6,9 +6,13 @@ import cors from 'cors'
 import authRoutes from './Routes/authRoutes.js'
 import quizRoutes from './Routes/quizRoutes.js'
 
-
-
 const app = express();
+app.set('view engine', 'ejs')
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
+
+
+
 app.use(bodyParser.json());
 app.use(cors())
 dotenv.config()
@@ -22,5 +26,5 @@ mongoose
     .catch((err) => ("DB CONNECTION FAILED", err))
 
 app.use('/auth',authRoutes);
-app.use("/quiz", quizRoutes);
+app.use('/quiz', quizRoutes);
 app.listen(port, ()=> console.log(`Server running on port: ${port}`)) 
